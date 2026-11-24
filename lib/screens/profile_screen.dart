@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../data/sample_posts.dart';
+import 'package:provider/provider.dart';
+
+import '../state/auth.dart';
 import 'overview_screen.dart';
 
-enum _Section { social, info, leaderboard, messages, badges }
+enum _Section { social, info, leaderboard, messages, badges, signOut }
 
 const _labels = {
   _Section.social: 'Social Feed',
@@ -11,6 +14,7 @@ const _labels = {
   _Section.leaderboard: 'Leaderboard',
   _Section.messages: 'Direct Messages',
   _Section.badges: 'Badges Catalog',
+  _Section.signOut: 'Sign out',
 };
 
 /// Opens on the Social Feed; every other section is in the three-dot menu.
@@ -36,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               tooltip: 'More sections',
               icon: const Icon(Icons.more_vert),
               initialValue: _section,
-              onSelected: (s) => setState(() => _section = s),
+              onSelected: (s) => s == _Section.signOut ? context.read<Auth>().signOut() : setState(() => _section = s),
               itemBuilder: (_) => [
                 for (final s in _Section.values) PopupMenuItem(value: s, height: 48, child: Text(_labels[s]!)),
               ],

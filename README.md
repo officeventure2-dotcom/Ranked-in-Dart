@@ -40,4 +40,5 @@ Done in this slice: Light/Dark/System theme, Figtree + Bricolage Grotesque fonts
 Challenges and Knowledge icon hubs with "Pick for me", Profile opening on the Social Feed with a three-dot menu.
 Not ported yet: games, books/store, rooms, Daily Rate, direct messages, login. These still live in the React app
 and the Cloudflare Worker (`worker/`); there is no Dart backend yet. Old screens (Overview, Map, Trivia) are still dark-only.
+Backend: the Cloudflare Worker (set `--dart-define=API_BASE=...` to point elsewhere). Sign in/up, saved session cookie.
 This code has not been compiled: run `flutter pub get && flutter analyze` first.

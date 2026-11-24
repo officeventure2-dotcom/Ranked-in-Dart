@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'api/api_client.dart';
 import 'models/user_profile.dart';
+import 'screens/sign_in_screen.dart';
+import 'state/auth.dart';
 import 'screens/hub_screens.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_screen.dart';
@@ -13,10 +16,13 @@ import 'widgets/bottom_nav_bar.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = await Settings.load();
+  final auth = Auth(await ApiClient.create());
+  await auth.restore();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<Settings>.value(value: settings),
+        ChangeNotifierProvider<Auth>.value(value: auth),
         ChangeNotifierProvider<UserProfile>(create: (_) => UserProfile.initial()),
       ],
       child: const RankedFlutterApp(),
@@ -35,7 +41,7 @@ class RankedFlutterApp extends StatelessWidget {
       themeMode: context.watch<Settings>().themeMode,
       theme: AppTheme.build(Brightness.light),
       darkTheme: AppTheme.build(Brightness.dark),
-      home: const MainScaffold(),
+      home: context.watch<Auth>().user == null ? const SignInScreen() : const MainScaffold(),
     );
   }
 }
